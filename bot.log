@@ -403,3 +403,7 @@
 [30;1m2023-01-10 13:09:09[0m [40;1mDEBUG   [0m [35mdiscord.gateway[0m For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
 [30;1m2023-01-10 13:09:50[0m [40;1mDEBUG   [0m [35mdiscord.gateway[0m Keeping shard ID None websocket alive with sequence 106.
 [30;1m2023-01-10 13:09:50[0m [40;1mDEBUG   [0m [35mdiscord.gateway[0m For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[30;1m2023-01-10 13:10:31[0m [40;1mDEBUG   [0m [35mdiscord.gateway[0m Keeping shard ID None websocket alive with sequence 106.
+[30;1m2023-01-10 13:10:31[0m [40;1mDEBUG   [0m [35mdiscord.gateway[0m For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[30;1m2023-01-10 13:11:13[0m [40;1mDEBUG   [0m [35mdiscord.gateway[0m Keeping shard ID None websocket alive with sequence 106.
+[30;1m2023-01-10 13:11:13[0m [40;1mDEBUG   [0m [35mdiscord.gateway[0m For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
