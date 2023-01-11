@@ -1,7 +1,20 @@
+"""
+    Main code for WINBot
+        Uses discord.py
+        I dislike stacked conditionals, so we use maps (map<str,callable>)
+        I like typing, please be consistent in typing
+    
+    Sections:
+        (a) WINBot Config Class
+        (b) WINBot Main Client Class
+        (c) "main"
+"""
 import discord
 import logging
-import enum
+# import enum
 import shlex
+from typing import Dict, List, Union
+from functools import partial
 
 import json
 import numpy as np
@@ -13,8 +26,8 @@ from message_commands import *
     TODO: Multiple loggers in the future
 """
 class WINBot:
-    def __init__(self,config_file="config.json",
-                 log_file="bot.log") -> None:
+    def __init__(self,config_file:str="config.json",
+                 log_file:str="bot.log") -> None:
         with open(config_file,"r") as f:
             config = json.load(f)
         self.dev = config["dev"]
@@ -37,7 +50,7 @@ bot = WINBot()
 
 class WINBotClient(discord.Client):
     
-    def __init__(self,bot : WINBot, *args, **kwargs):
+    def __init__(self,bot : WINBot, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.bot = bot
         self.role_message_id = bot.role_message_id
@@ -52,11 +65,13 @@ class WINBotClient(discord.Client):
             "bren_AHHHHHH" : 1017199500080730244,
             "josh_swole" : 1058457944695509174,
         }
+        
         # TODO: Make a class for commands instead of having redundancy
         # TODO: Import from config file
         self.message_command_map = {
             f"{self.bot.prefix}ping" : ping,
             f"{self.bot.prefix}WINDER" : winder,
+            
             f"{self.bot.prefix}set_note" : set_note,
             f"{self.bot.prefix}sn" : set_note,
             f"{self.bot.prefix}read_note" : read_note,
@@ -64,7 +79,10 @@ class WINBotClient(discord.Client):
             f"{self.bot.prefix}delete_note" : delete_note,
             f"{self.bot.prefix}dn" : delete_note,
             f"{self.bot.prefix}list_notes" : list_notes,
-            f"{self.bot.prefix}ln" : list_notes
+            f"{self.bot.prefix}ln" : list_notes,
+            
+            f"{self.bot.prefix}admin_flush_channel" : flush_channel,
+            f"{self.bot.prefix}aFlushChannel" : flush_channel
         }
     
     async def on_ready(self):
@@ -104,7 +122,6 @@ class WINBotClient(discord.Client):
         
         try:
             role_id = self.emoji_map[payload.emoji.name]
-            print(role_id)
         except KeyError:
             return
         
@@ -132,7 +149,7 @@ class WINBotClient(discord.Client):
             try:
                 args = shlex.split(message.content)
                 command = self.message_command_map[args[0]]
-                await command(message, *args[1:])
+                await command(message, *args[1:], **{'client':self})
             except KeyError:
                 pass
             
