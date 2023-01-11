@@ -2,11 +2,14 @@
 
 ### Features:
 1. Role Assignment
-2. 
+2. Simple Discord Notepad (<prefix>(command)_note(s))
 
 #### External Features:
 1. ChatGPT (OpenAI) (TODO: Need to add this again)
 2. 
+
+#### Future Features:
+1. 
 
 ### Dev setup (as short as possible)
 0. Ask *danzieboy#4030* to add you to dev server.
