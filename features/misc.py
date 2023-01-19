@@ -29,6 +29,7 @@ async def easteregg(interaction: Optional[discord.Interaction] = None,
         await message.channel.send(["Nope, not gonna happen", 
                                     "stop it. get some help", 
                                     "Ew. take a good look in the mirror.",
+                                    "Meow for me! My kitten.",
                                     "Drink some water you thirsty boy"][np.random.randint(0,4)], 
                                 delete_after=5)
 
