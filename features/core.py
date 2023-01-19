@@ -25,6 +25,11 @@ def verify_positive_number(x: str,nonnegative=False):
         return int(x) >= 0 if nonnegative else int(x) > 0
     return False
 
+def verify_leq(x: str, a: int):
+    if(x.isdigit()):
+        return int(x) <= a
+    return False
+
 """
     verify_message_args decorator:
         conds: verification conditions (boolean functions)

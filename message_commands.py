@@ -28,7 +28,7 @@ from obj_types import MessageCommandKwargType, MessageCommandArgType
 import features.simplenotes as simplenotes
 import features.admin as admin
 import features.misc as misc
-from features.core import verify_message_args, verify_user_id, verify_positive_number
+from features.core import verify_message_args, verify_user_id, verify_positive_number, verify_leq
 from features.logic import *
 
 # [START] Simple Discord Notepad
@@ -106,18 +106,14 @@ async def m_list_notes(message: discord.Message, *args: MessageCommandArgType, *
 @verify_message_args(
     conds=[
         lambda m,a,k : len(a) in [0,1,2],
-        lambda m,a,k : ((verify_user_id(a[0])) if not a[0].isdigit() else True) if len(a) == 1 else True,
+        lambda m,a,k : ((verify_user_id(a[0])) if not a[0].isdigit() else True) if len(a) == 1 else ((verify_user_id(a[0])) if len(a) == 2 else True),
         lambda m,a,k : (not a[0].isdigit()) if len(a) == 2 else True,
-        lambda m,a,k : (verify_user_id(a[0])) if len(a) == 2 else True,
-        lambda m,a,k : (a[1].isdigit()) if len(a) == 2 else True,
-        lambda m,a,k : (int_posinf(a[1]) <= 100) if len(a) == 2 else True,
+        lambda m,a,k : (verify_leq(a[1], 100)) if len(a) == 2 else True,
     ],
     fail_descriptions = [
         "Too many arguments given: <usage>",
         "Member not found.",
         "Wrong usage of command: <usage>",
-        "Member not found.",
-        "Second parameter needs to be an integer <= 100: <usage>",
         "Second parameter needs to be an integer <= 100: <usage>"
     ],
     usage="[admin_flush_channel | aFlushChannel] [@<member> | message limit] [@<member>:message limit]"
