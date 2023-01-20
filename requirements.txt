@@ -2,3 +2,5 @@ discord.py[voice]
 openai
 numpy
 matplotlib
+sphinx
+sphinx_rtd_theme
