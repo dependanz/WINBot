@@ -1,6 +1,7 @@
 import re
 import discord
 import json
+import requests
 import asyncio
 from typing import Any, Dict, List, Union, Optional, Callable
 
@@ -30,6 +31,19 @@ def verify_leq(x: str, a: int):
         return int(x) <= a
     return False
 
+def verify_git():
+    try:
+        with open("config.json","r") as f:
+            config = json.load(f)
+            
+        url = 'https://api.github.com/repos/%s/%s' % (config['repo_owner'], "WINBot")
+        r = requests.get(url=url,
+                         headers = {'Authorization': 'Bearer ' + config["git.token"]})  
+        return True
+    except:
+        print("Git Error")
+        return False
+    
 """
     verify_message_args decorator:
         conds: verification conditions (boolean functions)
@@ -84,6 +98,12 @@ def sm_message(interaction: discord.Interaction = None,
         return interaction.message
     else:
         return message
+
+def verify_admin_message(message: Optional[discord.Message] = None):
+    user = message.author
+    
+    role = discord.utils.find(lambda r: r.name == 'friend', message.guild.roles)
+    return role in user.roles
 
 """
     Send Embed

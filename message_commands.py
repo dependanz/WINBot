@@ -29,6 +29,7 @@ import features.simplenotes as simplenotes
 import features.admin as admin
 import features.misc as misc
 from features.core import verify_message_args, verify_user_id, verify_positive_number, verify_leq
+from features.core import verify_git, verify_admin_message
 from features.logic import *
 
 # [START] Simple Discord Notepad
@@ -171,6 +172,34 @@ async def m_echo(message: discord.Message,
 )
 async def m_create_role(message: discord.Message, *args: MessageCommandArgType, **kwargs: MessageCommandKwargType):
     await admin.create_role(message=message,name=args[0])
+    
+"""
+    Create Github issue
+"""
+@verify_message_args(
+    conds=[
+        lambda m,a,k : len(a) == 3,
+        lambda m,a,k : verify_admin_message(message=m),
+        lambda m,a,k : verify_git(),
+    ],
+    fail_descriptions = [
+        "Wrong usage of command: <usage>",
+        "Member is not an admin. Can't use this command!",
+        "Server has invalid github credentials",
+    ],
+    usage="git-issue [title] [body] [labels separated by commas]"
+)
+async def m_create_git_issue(message: discord.Message, *args: MessageCommandArgType, **kwargs: MessageCommandKwargType):
+    with open("config.json","r") as f:
+        config = json.load(f)
+    await admin.create_git_issue(
+        message=message,
+        auth_token=config["git.token"],
+        repo_owner=config["repo_owner"],
+        title=args[0],
+        body=args[1],
+        labels=args[2].split(",")
+    )
 # [END] Admin Tools
 
 # [START] Miscellaneous

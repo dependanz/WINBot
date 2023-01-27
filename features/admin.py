@@ -3,6 +3,7 @@
 """
 import discord
 import json
+import requests
 import numpy as np
 from typing import Dict, List, Union, Optional, Callable
 from features.core import *
@@ -83,8 +84,8 @@ async def echo(interaction: Optional[discord.Interaction] = None,
 """
 @verify_sm
 async def create_role(interaction: Optional[discord.Interaction] = None,
-               message: Optional[discord.Message] = None,
-               name: str = ""):
+                    message: Optional[discord.Message] = None,
+                    name: str = ""):
     
     await message.guild.create_role(name=name,
                                     colour=discord.Colour(np.random.randint(0,2**24)))
@@ -93,3 +94,45 @@ async def create_role(interaction: Optional[discord.Interaction] = None,
                                               f'Created role: {name}', 
                                               SUCCESS_COLOR)
     await sm_message(interaction,message).delete()
+    
+"""
+    Create Github Issue
+"""
+@verify_sm
+async def create_git_issue(interaction: Optional[discord.Interaction] = None,
+                        message: Optional[discord.Message] = None,
+                        auth_token="",
+                        repo_owner="dependanz",
+                        title="", 
+                        body="", 
+                        assignee=None, 
+                        milestone=None, 
+                        labels=[]):
+
+    url = f'https://api.github.com/repos/{repo_owner}/WINBot/issues'
+    issue = {'title': title,
+            'body': body,
+            'labels': labels}
+    if assignee is not None:
+        issue['assignee'] = assignee
+    if milestone is not None:
+        issue['milestone'] = milestone
+        
+    r = requests.post(
+        url=url,
+        headers = {'Authorization': 'Bearer ' + auth_token},
+        data=json.dumps(issue)
+    )
+    
+    if r.status_code == 201:
+        await send_embed[interaction is not None](sm_switch(interaction, message), 
+                                                  "Admin: Git", 
+                                                  f'Successfully created issue "**{title}**"', 
+                                                  SUCCESS_COLOR, 
+                                                  5)
+    else:
+        await send_embed[interaction is not None](sm_switch(interaction, message), 
+                                                  "Admin: Git", 
+                                                  f'Error creating issue "**{title}**"', 
+                                                  FAIL_COLOR, 
+                                                  5)

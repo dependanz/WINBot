@@ -1,6 +1,7 @@
 config.json
 bot.log
 __pycache__
+*/__pycache__
 */**/__pycache__
 docs/_build
 docs/_static

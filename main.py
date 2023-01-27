@@ -98,6 +98,7 @@ class WINBotClient(discord.Client):
             f"{self.bot.prefix}aEcho" : m_echo,
             f"{self.bot.prefix}admin_create_role" : m_create_role,
             f"{self.bot.prefix}aCreateRole" : m_create_role,
+            f"{self.bot.prefix}[git-issue]" : m_create_git_issue,
             
             f"{self.bot.prefix}ping" : m_ping,
             f"{self.bot.prefix}WINDER" : m_winder,
